@@ -10,7 +10,9 @@ import { loadFactsFile, loadSdrConfigFile, loadSuppressionFile, type Fact, type 
 import type { Drafter } from "./sdr/drafter.js";
 import { createDrafter } from "./sdr/select.js";
 import type { SdrDeps } from "./sdr/service.js";
+import { loadEconomicsFile, type EconomicsConfig } from "./economics/config.js";
 import { ToolError } from "./tools/errors.js";
+import { estimateCostInputSchema, estimateCostTool } from "./tools/estimateCost.js";
 import {
   approveDraftInputSchema, approveDraftTool, draftEmailInputSchema, draftEmailTool, getDraftInputSchema, getDraftTool,
   listDraftsInputSchema, listDraftsTool, rejectDraftInputSchema, rejectDraftTool,
@@ -27,6 +29,7 @@ export interface ServerDeps {
   db?: Db;
   clock?: Clock;
   /** Overrides for the AI SDR drafter; by default everything is loaded lazily from config/, data/ and SDR_* env vars. */
+  economics?: EconomicsConfig;
   sdr?: { drafter?: Drafter; facts?: Fact[]; suppression?: SuppressionEntry[]; config?: SdrConfig };
 }
 
@@ -57,6 +60,12 @@ export function createServer(deps: ServerDeps = {}): McpServer {
     };
     return sdr;
   };
+  const getEconomics = () => ({
+    db: getDb(),
+    clock,
+    economics: deps.economics ?? loadEconomicsFile(new URL("../config/economics.json", import.meta.url)),
+    sdrConfig: deps.sdr?.config ?? loadSdrConfigFile(new URL("../config/sdr.json", import.meta.url)),
+  });
   const routingConfig = deps.routingConfig ?? loadConfigFile(new URL("../config/routing.json", import.meta.url));
   const server = new McpServer({ name: "gtm-copilot", version: "0.1.0" });
 
@@ -158,6 +167,17 @@ export function createServer(deps: ServerDeps = {}): McpServer {
     "reject_draft",
     { description: "Reject a pending draft with a reason code and an optional note.", inputSchema: rejectDraftInputSchema.shape },
     async (input) => guarded(() => rejectDraftTool(getSdr(), input)),
+  );
+
+  server.registerTool(
+    "estimate_cost_per_meeting",
+    {
+      description:
+        "Compare build vs buy vs hybrid AI SDR options by cost per booked meeting. Shows where the money goes, the volume at which options cross over, how robust the recommendation is, and tags every input as measured, assumption or override. The funnel, cost and vendor numbers are placeholders, not benchmarks.",
+      inputSchema: estimateCostInputSchema.shape,
+      annotations: { readOnlyHint: true },
+    },
+    async (input) => guarded(() => estimateCostTool(getEconomics(), input)),
   );
 
   return server;

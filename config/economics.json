@@ -1,0 +1,56 @@
+{
+  "_note": "PLACEHOLDER ASSUMPTIONS for the GTM Copilot pilot. Not benchmarks, not Krisp's figures, not vendor quotes. Replace with real data (CRM funnel rates, loaded hourly rates, vendor quotes) or override per call.",
+  "defaults": {
+    "source": "assumption",
+    "leadsPerMonth": 2000,
+    "touchesPerLead": 4,
+    "replyRate": 0.04,
+    "positiveShare": 0.3,
+    "meetingFromPositive": 0.5,
+    "showRate": 0.75,
+    "reviewedDraftsPerLead": 1,
+    "reviewMinutesPerDraft": 1.5,
+    "loadedHourlyRate": 40,
+    "passRate": 0.8,
+    "assumedTokensPerDraft": { "input": 500, "output": 120 },
+    "minMeasuredDrafts": 10
+  },
+  "scenarios": [
+    {
+      "id": "build",
+      "label": "Build (this repo)",
+      "description": "Own routing, enrichment, guarded drafting and human approval. Upkeep is our engineering time.",
+      "source": "assumption",
+      "usesOwnLlm": true,
+      "meetingRateMultiplier": 1,
+      "reviewShare": 1,
+      "variablePerLead": { "enrichment": 0.15 },
+      "fixedMonthly": { "engineeringUpkeep": 1800, "sendingInfrastructure": 300 },
+      "perMeetingFee": 0
+    },
+    {
+      "id": "buy",
+      "label": "Buy (vendor AI SDR platform)",
+      "description": "A vendor runs sequencing, sending and drafting. We pay a platform fee plus a fee per booked meeting. Needs a real quote.",
+      "source": "assumption",
+      "usesOwnLlm": false,
+      "meetingRateMultiplier": 1,
+      "reviewShare": 0.2,
+      "variablePerLead": { "enrichment": 0.15 },
+      "fixedMonthly": { "platformFee": 2500 },
+      "perMeetingFee": 120
+    },
+    {
+      "id": "hybrid",
+      "label": "Hybrid (vendor sending, our guardrails)",
+      "description": "A vendor handles sequencing and sending; our routing, approved facts and guardrails stay in front of it.",
+      "source": "assumption",
+      "usesOwnLlm": true,
+      "meetingRateMultiplier": 1,
+      "reviewShare": 1,
+      "variablePerLead": { "enrichment": 0.15 },
+      "fixedMonthly": { "platformFee": 800, "engineeringUpkeep": 600 },
+      "perMeetingFee": 40
+    }
+  ]
+}
