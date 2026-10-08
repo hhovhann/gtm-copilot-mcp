@@ -39,7 +39,11 @@ Each phase gets a folder `specs/YYYY-MM-DD-<name>/` with `requirements.md`, `pla
 
 ## Phase 6 - Docs and Demo
 - README quickstart, architecture diagram, runbook, data rules
-- Two-minute demo recording, **final file under 25 MB** (check with `ls -l`/`ffprobe` before sharing; re-encode if over)
+- Demo video, 2 to 3 minutes, **final file under 25 MB** (check with `ls -l`/`ffprobe`; re-encode if over). Same format as the travel-assistant video (1920x1080 H.264, AAC, soft subtitles, plus `.srt`)
+  - Synthetic voice from macOS `say` (one narration script, one audio file per slide)
+  - Simple, clear slides: Markdown -> `pandoc` (pptx) -> `soffice` (pdf) -> `pdftoppm` (png); one idea per slide, large text
+  - Demo slides show **real captured output** from the MCP tools, not mock-ups; `ffmpeg` joins slides and audio, with timing taken from each audio file
+  - Build script lives in the repo (`docs/video/build.sh`) so the video can be regenerated
 - Short cover note for the Krisp team
 
 ---
