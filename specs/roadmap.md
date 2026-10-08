@@ -23,7 +23,8 @@ Each phase gets a folder `specs/YYYY-MM-DD-<name>/` with `requirements.md`, `pla
 ## Phase 4 - Webhook Intake and Mock CRM
 - Hono `POST /webhooks/lead` with Zod validation and a shared-secret check
 - SQLite tables: leads, decisions, audit_log
-- `explain_lead` tool: why a lead was routed where it was
+- `explain_lead` tool: why a lead was routed where it was (from the stored decision, never recomputed)
+- `list_leads` tool (masked emails) so Claude can find ids to explain
 
 ## Phase 5 - AI SDR Drafter with Guardrails
 - `draft_email` tool: Claude drafts from lead + approved-facts file
@@ -40,3 +41,5 @@ Each phase gets a folder `specs/YYYY-MM-DD-<name>/` with `requirements.md`, `pla
 
 ## Replanning Log
 _Add dated notes here when scope changes._
+
+- 2026-10-08 (Phase 4): storage driver changed from `better-sqlite3` to built-in `node:sqlite` to avoid a native build on Node 25; engine floor raised to Node 22.5+. Added `list_leads` to Phase 4.

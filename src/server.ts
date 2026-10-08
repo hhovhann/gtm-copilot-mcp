@@ -1,20 +1,38 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { systemClock, type Clock } from "./db/audit.js";
+import { openDb, resolveDbPath, type Db } from "./db/open.js";
 import { NodeDnsResolver, type DnsResolver } from "./dns/resolver.js";
 import { auditDomainInputSchema, auditDomainTool } from "./tools/auditDomain.js";
 import { loadConfigFile, type RoutingConfig } from "./leads/config.js";
 import { loadCompaniesFile, MockEnricher, type Enricher } from "./leads/enrich.js";
 import { routeLeadInputSchema, routeLeadTool } from "./tools/routeLead.js";
+import { ToolError } from "./tools/errors.js";
+import { explainLeadInputSchema, explainLeadTool } from "./tools/explainLead.js";
+import { listLeadsInputSchema, listLeadsTool } from "./tools/listLeads.js";
 import { ping, pingInputSchema } from "./tools/ping.js";
 
 export interface ServerDeps {
   dns?: DnsResolver;
   enricher?: Enricher;
   routingConfig?: RoutingConfig;
+  /** Injected in tests; otherwise opened lazily from GTM_DB_PATH on first use. */
+  db?: Db;
+  clock?: Clock;
+}
+
+const asText = (texts: string[]) => ({ content: texts.map((text) => ({ type: "text" as const, text })) });
+
+function toolErrorResult(err: unknown) {
+  if (err instanceof ToolError) return { isError: true, content: [{ type: "text" as const, text: err.message }] };
+  throw err;
 }
 
 export function createServer(deps: ServerDeps = {}): McpServer {
   const dns = deps.dns ?? new NodeDnsResolver();
   const enricher = deps.enricher ?? new MockEnricher(loadCompaniesFile(new URL("../data/companies.json", import.meta.url)));
+  const clock = deps.clock ?? systemClock;
+  let db = deps.db;
+  const getDb = () => (db ??= openDb(resolveDbPath()));
   const routingConfig = deps.routingConfig ?? loadConfigFile(new URL("../config/routing.json", import.meta.url));
   const server = new McpServer({ name: "gtm-copilot", version: "0.1.0" });
 
@@ -49,6 +67,31 @@ export function createServer(deps: ServerDeps = {}): McpServer {
     async (input) => ({
       content: (await routeLeadTool(input, enricher, routingConfig)).map((text) => ({ type: "text" as const, text })),
     }),
+  );
+
+  server.registerTool(
+    "explain_lead",
+    {
+      description:
+        "Explain why a stored lead was routed where it was. Returns the decision exactly as recorded when the lead arrived (score breakdown, rule trace, config hash), not a recomputation.",
+      inputSchema: explainLeadInputSchema.shape,
+    },
+    async (input) => {
+      try {
+        return asText(explainLeadTool(getDb(), clock, input));
+      } catch (err) {
+        return toolErrorResult(err);
+      }
+    },
+  );
+
+  server.registerTool(
+    "list_leads",
+    {
+      description: "List the most recent leads received by the webhook, newest first, with masked emails. Use it to find ids for explain_lead.",
+      inputSchema: listLeadsInputSchema.shape,
+    },
+    async (input) => asText(listLeadsTool(getDb(), clock, input)),
   );
 
   return server;

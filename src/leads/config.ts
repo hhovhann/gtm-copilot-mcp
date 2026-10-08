@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { z } from "zod";
 import { LEAD_SOURCES } from "./model.js";
@@ -77,4 +78,9 @@ export function loadConfig(raw: unknown): RoutingConfig {
 
 export function loadConfigFile(url: URL | string): RoutingConfig {
   return loadConfig(JSON.parse(readFileSync(url, "utf8")));
+}
+
+/** Stable fingerprint of the parsed config, stored with each decision. */
+export function hashConfig(config: RoutingConfig): string {
+  return createHash("sha256").update(JSON.stringify(config)).digest("hex");
 }
