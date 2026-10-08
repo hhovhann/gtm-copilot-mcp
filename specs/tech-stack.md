@@ -12,7 +12,7 @@ TypeScript-first, single Node package. Small surface area, strict types, easy to
 | Webhook API | Hono + `@hono/node-server` | Tiny, typed, fast to test |
 | Validation | Zod | Tool inputs and webhook payloads validated at the boundary |
 | Storage | SQLite (`node:sqlite`, built in) | Stand-in CRM, audit log, approval queue; no native build step. Prints an experimental warning on stderr |
-| LLM | Anthropic SDK (`claude-sonnet-5-5`) | Email drafting; mockable for tests and offline runs |
+| LLM | Local model via LM Studio (OpenAI-compatible API, plain `fetch`) now; Anthropic SDK with `claude-sonnet-5-5` is the production target (Phase 5c) | Email drafting behind a `Drafter` interface; tests stub `fetch` and never need a model |
 | DNS | `node:dns/promises` | Real SPF/DKIM/DMARC lookups, no credentials |
 | Tests | Vitest | Fast, TS-native |
 | Dev runner | `tsx` | No build step during development |

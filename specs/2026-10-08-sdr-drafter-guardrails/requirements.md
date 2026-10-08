@@ -9,7 +9,7 @@ Every control that matters is enforced in code, so a manipulated or sloppy model
 
 **For now the model is a local one** (LM Studio on this machine), used for experimenting at zero cost and with no lead data leaving the machine.
 `claude-sonnet-5-5` stays the production target. The drafter sits behind an interface, so moving to Claude is a small, separate step (Phase 5c).
-Local models are less reliable than Claude, which makes the guardrails matter more. Results here must never be presented as Claude's quality.
+Local models are less reliable than Claude, which makes the guardrails matter more. The live check below proves it: 12 of 36 local drafts were blocked. Results here must never be presented as Claude's quality.
 
 ## Scope
 
@@ -75,10 +75,10 @@ Local models are less reliable than Claude, which makes the guardrails matter mo
 | `fact_ids_valid` | every id in `claimsUsed` exists and is allowed for the queue | blocked |
 | `min_claims` | at least one approved fact cited | blocked |
 | `needs_source` | any number, `%`, currency amount, certification or compliance term (SOC 2, ISO 27001, HIPAA, GDPR, PCI), or superlative ("best", "#1", "only", "leading") in the body must also appear in a **cited** fact's text | blocked |
-| `never_claim` | phrases from config such as "guarantee", "100%", "no risk", "as we discussed", "following our call" (invented history) | blocked |
+| `never_claim` | phrases from config such as "guarantee", "100%", "no risk", "as we discussed", "following our call" (invented history) and invented track record ("we've helped similar...", "our customers", "trusted by", "proven"; curly apostrophes normalized). Track-record phrases were added after a real Llama draft claimed "We've helped similar financial institutions" | blocked |
 | `no_links_or_addresses` | no URL, email address or domain-like token in subject or body | blocked |
 | `no_internal_ids` | no fact id (like `F-1`), prompt wording or template placeholder (`{{...}}`) leaks into the subject or body | blocked |
-| `length` | subject and body within limits | blocked |
+| `length` | subject 1-80 characters and body 80-1200: **a greeting alone is not an email** (added after a real Llama draft that was only "Hi Lena," passed) | blocked |
 | `footer` | the code-appended footer (unsubscribe line and sender address placeholder) is present exactly once and the model text did not impersonate one | blocked |
 | `lead_message_dropped` | informational: the lead message was withheld from the model | warning |
 
@@ -89,7 +89,7 @@ Local models are less reliable than Claude, which makes the guardrails matter mo
 - New table `drafts`: id, lead_id, created_at, status (`pending_review` | `blocked` | `approved` | `rejected`), subject, body (including footer), `claims_json`, `guardrails_json`,
   `content_hash`, drafter, model, prompt_version, `input_tokens`, `output_tokens`, `est_cost_usd`, decided_at, decision_note
 - Schema version goes 1 -> 2 with an in-place migration that keeps existing data
-- **Drafts are immutable**: a trigger aborts any `UPDATE` that changes subject, body, claims, guardrail results or content hash. Only status, decided_at and decision_note may change, and only from `pending_review`.
+- **Drafts are immutable**: a trigger aborts any `UPDATE` that changes subject, body, claims, guardrail results, content hash, model or token counts. Only the decision fields may change, only from `pending_review`, and **a decision is final**: a second trigger aborts any later change to status, `decided_at`, reason or note. Drafts cannot be deleted.
 - `drafter` and `model` record what actually wrote the draft, so a local-model draft can never be mistaken for a Claude one; `est_cost_usd` is `0` for local and template drafts
 - The config also carries a `production` target (`claude-sonnet-5-5`, price per MTok $2 input / $10 output, `asOf` date, to be re-verified) used only for Phase 5b projections
 - Audit actions added: `draft_created`, `draft_blocked`, `draft_skipped`, `draft_approved`, `draft_rejected`. **Audit detail never holds draft text or lead data**: ids, queue, check ids, token counts, model.
@@ -131,4 +131,4 @@ Local models are less reliable than Claude, which makes the guardrails matter mo
 ## Layout
 
 `src/sdr/{facts,suppression,sanitize,prompt,drafter,localDrafter,templateDrafter,guardrails,footer,service}.ts`, `src/db/drafts.ts`,
-`src/tools/{draftEmail,getDraft,listDrafts,approveDraft,rejectDraft}.ts`, `config/sdr.json`, `data/approved-facts.json`, `data/suppression.json`
+`src/tools/sdrTools.ts` (all five tool handlers in one file), `config/sdr.json`, `data/approved-facts.json`, `data/suppression.json`

@@ -9,7 +9,12 @@ export type AuditAction =
   | "duplicate_ignored"
   | "payload_rejected"
   | "unauthorized"
-  | "tool_call";
+  | "tool_call"
+  | "draft_created"
+  | "draft_blocked"
+  | "draft_skipped"
+  | "draft_approved"
+  | "draft_rejected";
 
 export interface AuditEntry {
   actor: "webhook" | "mcp";

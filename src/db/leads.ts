@@ -95,3 +95,26 @@ export function maskEmail(email: string): string {
   if (at < 1) return "***";
   return `${email[0]}***${email.slice(at)}`;
 }
+
+export interface LeadRecord {
+  id: number;
+  receivedAt: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  title: string | null;
+  source: string;
+  message: string | null;
+  domain: string;
+}
+
+export function getLead(db: Db, leadId: number): LeadRecord | null {
+  const r = db
+    .prepare("SELECT id, received_at, email, first_name, last_name, title, source, message, domain FROM leads WHERE id = ?")
+    .get(leadId) as
+    | { id: number; received_at: string; email: string; first_name: string; last_name: string; title: string | null; source: string; message: string | null; domain: string }
+    | undefined;
+  return r
+    ? { id: r.id, receivedAt: r.received_at, email: r.email, firstName: r.first_name, lastName: r.last_name, title: r.title, source: r.source, message: r.message, domain: r.domain }
+    : null;
+}

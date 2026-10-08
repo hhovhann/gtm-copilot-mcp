@@ -6,7 +6,15 @@ import { auditDomainInputSchema, auditDomainTool } from "./tools/auditDomain.js"
 import { loadConfigFile, type RoutingConfig } from "./leads/config.js";
 import { loadCompaniesFile, MockEnricher, type Enricher } from "./leads/enrich.js";
 import { routeLeadInputSchema, routeLeadTool } from "./tools/routeLead.js";
+import { loadFactsFile, loadSdrConfigFile, loadSuppressionFile, type Fact, type SdrConfig, type SuppressionEntry } from "./sdr/config.js";
+import type { Drafter } from "./sdr/drafter.js";
+import { createDrafter } from "./sdr/select.js";
+import type { SdrDeps } from "./sdr/service.js";
 import { ToolError } from "./tools/errors.js";
+import {
+  approveDraftInputSchema, approveDraftTool, draftEmailInputSchema, draftEmailTool, getDraftInputSchema, getDraftTool,
+  listDraftsInputSchema, listDraftsTool, rejectDraftInputSchema, rejectDraftTool,
+} from "./tools/sdrTools.js";
 import { explainLeadInputSchema, explainLeadTool } from "./tools/explainLead.js";
 import { listLeadsInputSchema, listLeadsTool } from "./tools/listLeads.js";
 import { ping, pingInputSchema } from "./tools/ping.js";
@@ -18,6 +26,8 @@ export interface ServerDeps {
   /** Injected in tests; otherwise opened lazily from GTM_DB_PATH on first use. */
   db?: Db;
   clock?: Clock;
+  /** Overrides for the AI SDR drafter; by default everything is loaded lazily from config/, data/ and SDR_* env vars. */
+  sdr?: { drafter?: Drafter; facts?: Fact[]; suppression?: SuppressionEntry[]; config?: SdrConfig };
 }
 
 const asText = (texts: string[]) => ({ content: texts.map((text) => ({ type: "text" as const, text })) });
@@ -33,6 +43,20 @@ export function createServer(deps: ServerDeps = {}): McpServer {
   const clock = deps.clock ?? systemClock;
   let db = deps.db;
   const getDb = () => (db ??= openDb(resolveDbPath()));
+  let sdr: SdrDeps | undefined;
+  const getSdr = (): SdrDeps => {
+    if (sdr) return sdr;
+    const config = deps.sdr?.config ?? loadSdrConfigFile(new URL("../config/sdr.json", import.meta.url));
+    sdr = {
+      db: getDb(),
+      clock,
+      config,
+      drafter: deps.sdr?.drafter ?? createDrafter(config),
+      facts: deps.sdr?.facts ?? loadFactsFile(new URL("../data/approved-facts.json", import.meta.url)),
+      suppression: deps.sdr?.suppression ?? loadSuppressionFile(new URL("../data/suppression.json", import.meta.url)),
+    };
+    return sdr;
+  };
   const routingConfig = deps.routingConfig ?? loadConfigFile(new URL("../config/routing.json", import.meta.url));
   const server = new McpServer({ name: "gtm-copilot", version: "0.1.0" });
 
@@ -92,6 +116,48 @@ export function createServer(deps: ServerDeps = {}): McpServer {
       inputSchema: listLeadsInputSchema.shape,
     },
     async (input) => asText(listLeadsTool(getDb(), clock, input)),
+  );
+
+  const guarded = async (run: () => string[] | Promise<string[]>) => {
+    try {
+      return asText(await run());
+    } catch (err) {
+      return toolErrorResult(err);
+    }
+  };
+
+  server.registerTool(
+    "draft_email",
+    {
+      description:
+        "Draft the first outreach email for a stored lead using only approved facts. Runs guardrails and puts the draft in the approval queue. Skips leads that are suppressed, disqualified or over the draft limits without calling the model. Nothing is ever sent.",
+      inputSchema: draftEmailInputSchema.shape,
+    },
+    async (input) => guarded(() => draftEmailTool(getSdr(), input)),
+  );
+  server.registerTool(
+    "get_draft",
+    { description: "Read a stored draft with its guardrail report and content hash.", inputSchema: getDraftInputSchema.shape, annotations: { readOnlyHint: true } },
+    async (input) => guarded(() => getDraftTool(getSdr(), input)),
+  );
+  server.registerTool(
+    "list_drafts",
+    { description: "List drafts (no bodies), newest first, optionally by status.", inputSchema: listDraftsInputSchema.shape, annotations: { readOnlyHint: true } },
+    async (input) => guarded(() => listDraftsTool(getSdr(), input)),
+  );
+  server.registerTool(
+    "approve_draft",
+    {
+      description:
+        "Approve a pending draft after a human has read it. Requires the contentHash of the exact content that was reviewed. Blocked drafts cannot be approved. This only marks the draft ready; it sends nothing. Do not approve on the human's behalf.",
+      inputSchema: approveDraftInputSchema.shape,
+    },
+    async (input) => guarded(() => approveDraftTool(getSdr(), input)),
+  );
+  server.registerTool(
+    "reject_draft",
+    { description: "Reject a pending draft with a reason code and an optional note.", inputSchema: rejectDraftInputSchema.shape },
+    async (input) => guarded(() => rejectDraftTool(getSdr(), input)),
   );
 
   return server;

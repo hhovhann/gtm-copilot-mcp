@@ -1,0 +1,100 @@
+{
+  "draftableQueues": [
+    "enterprise_ae",
+    "midmarket_ae",
+    "call_center_specialist",
+    "developer_sdk",
+    "smb_nurture"
+  ],
+  "limits": {
+    "maxDraftsPerLead": 3,
+    "maxDraftsPer24h": 50,
+    "subjectMax": 80,
+    "bodyMin": 80,
+    "bodyMax": 1200,
+    "messageMaxChars": 500
+  },
+  "local": {
+    "baseUrl": "http://127.0.0.1:1234/v1",
+    "model": "meta-llama-3.1-8b-instruct",
+    "temperature": 0.3,
+    "timeoutMs": 180000,
+    "maxTokens": 1500
+  },
+  "production": {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "pricePerMTok": {
+      "input": 2,
+      "output": 10
+    },
+    "asOf": "2026-10-06"
+  },
+  "injectionPatterns": [
+    "ignore\\s+(all\\s+|any\\s+)?(the\\s+)?(previous|prior|above|earlier)\\s+(instructions?|prompts?|rules?)",
+    "disregard\\s+(all\\s+|any\\s+)?(the\\s+)?(previous|prior|above|your)",
+    "system\\s+prompt",
+    "you\\s+are\\s+now\\b",
+    "new\\s+instructions?",
+    "\\bact\\s+as\\b",
+    "reveal\\s+(your\\s+)?(prompt|instructions)",
+    "jailbreak",
+    "</?\\s*(system|assistant|user|lead_message)\\b"
+  ],
+  "neverClaim": [
+    "guarantee",
+    "guaranteed",
+    "100%",
+    "no risk",
+    "risk-free",
+    "as we discussed",
+    "following our call",
+    "as per our call",
+    "per our conversation",
+    "i noticed you visited",
+    "we've helped",
+    "we have helped",
+    "helped similar",
+    "similar companies",
+    "similar institutions",
+    "similar firms",
+    "similar organizations",
+    "similar businesses",
+    "our customers",
+    "our clients",
+    "trusted by",
+    "proven",
+    "success stories"
+  ],
+  "needsSource": {
+    "terms": [
+      "SOC 2",
+      "ISO 27001",
+      "HIPAA",
+      "GDPR",
+      "PCI"
+    ],
+    "superlatives": [
+      "best",
+      "#1",
+      "only",
+      "leading",
+      "industry-leading",
+      "fastest",
+      "world-class"
+    ]
+  },
+  "leakTerms": [
+    "approved facts",
+    "claimsused",
+    "untrusted",
+    "json",
+    "schema",
+    "system prompt"
+  ],
+  "footer": {
+    "senderName": "Pilot Sender (demo, nothing is sent)",
+    "postalAddress": "[postal address placeholder]",
+    "unsubscribeLine": "If you would rather not hear from us, reply \"unsubscribe\" and we will stop."
+  }
+}

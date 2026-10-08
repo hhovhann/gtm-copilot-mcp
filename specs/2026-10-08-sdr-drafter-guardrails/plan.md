@@ -43,7 +43,7 @@
 ## Group 6 - Service and Tools
 
 22. `src/sdr/service.ts`: `createDraft(leadId)`: load lead and stored decision, eligibility, build input, call the drafter **outside any DB transaction**, run guardrails, then insert draft and audit rows in one transaction that re-checks the limits
-23. `src/tools/{draftEmail,getDraft,listDrafts,approveDraft,rejectDraft}.ts` with Zod inputs; `ToolError` for not-found and illegal transitions
+23. `src/tools/sdrTools.ts` (five handlers) with Zod inputs; `ToolError` for not-found and illegal transitions
 24. Register in `src/server.ts` with an injectable drafter, defaulting from `SDR_DRAFTER`; `.env.example` gets `SDR_DRAFTER`, `SDR_LOCAL_BASE_URL`, `SDR_LOCAL_MODEL`, `SDR_ALLOW_REMOTE_LLM`
 25. Tests: blocked drafts cannot be approved; wrong `reviewedHash` is refused and the draft stays pending; second approve or reject is refused; reject stores the note but the audit detail holds only the reason code; audit rows carry no lead data or draft text after a full scenario
 

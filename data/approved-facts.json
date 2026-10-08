@@ -1,0 +1,11 @@
+{
+  "_note": "PILOT PLACEHOLDER. Descriptive statements paraphrased from public product names only. No statistics, customer names, certifications or pricing. Replace with Marketing-approved messaging before any real use.",
+  "facts": [
+    { "id": "F-MEET-01", "text": "Krisp offers an AI Meeting Assistant that records and transcribes meetings and writes notes and minutes.", "category": "product", "allowedQueues": ["enterprise_ae", "midmarket_ae", "smb_nurture"], "source": "krisp.ai public product navigation, paraphrased", "status": "pilot-placeholder" },
+    { "id": "F-NC-01", "text": "Krisp provides noise cancellation for calls and meetings.", "category": "product", "allowedQueues": ["enterprise_ae", "midmarket_ae", "smb_nurture", "call_center_specialist"], "source": "krisp.ai public product navigation, paraphrased", "status": "pilot-placeholder" },
+    { "id": "F-ACC-01", "text": "Krisp offers accent conversion for voice calls.", "category": "product", "allowedQueues": ["enterprise_ae", "midmarket_ae", "call_center_specialist"], "source": "krisp.ai public product navigation, paraphrased", "status": "pilot-placeholder" },
+    { "id": "F-CC-01", "text": "Krisp offers Call Center AI products, including speech analytics and agent assist.", "category": "product", "allowedQueues": ["call_center_specialist"], "source": "krisp.ai public product navigation, paraphrased", "status": "pilot-placeholder" },
+    { "id": "F-TRANS-01", "text": "Krisp offers voice translation.", "category": "product", "allowedQueues": ["call_center_specialist", "developer_sdk", "enterprise_ae"], "source": "krisp.ai public product navigation, paraphrased", "status": "pilot-placeholder" },
+    { "id": "F-DEV-01", "text": "Krisp offers developer SDKs, including a Voice Isolation SDK and a Noise Cancellation SDK.", "category": "product", "allowedQueues": ["developer_sdk"], "source": "krisp.ai public product navigation, paraphrased", "status": "pilot-placeholder" }
+  ]
+}

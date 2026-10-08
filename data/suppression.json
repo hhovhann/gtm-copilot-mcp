@@ -1,0 +1,7 @@
+{
+  "_note": "SYNTHETIC suppression list for the demo. Leads matching an email or domain here are never drafted.",
+  "entries": [
+    { "type": "email", "value": "jordan@regionalclinic.example", "reason": "asked to be removed (synthetic)" },
+    { "type": "domain", "value": "optedout.example", "reason": "company-wide opt-out (synthetic)" }
+  ]
+}
