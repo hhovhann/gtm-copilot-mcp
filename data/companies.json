@@ -1,0 +1,17 @@
+{
+  "_note": "SYNTHETIC DATA. Invented companies for the GTM Copilot demo. Not real firmographics, not real people.",
+  "companies": {
+    "megacontact.example":   { "name": "MegaContact BPO",       "employees": 12000, "industry": "contact_center",     "country": "US", "segmentHints": ["call_center"] },
+    "helpdeskpro.example":   { "name": "HelpDesk Pro",          "employees": 450,   "industry": "software",           "country": "US", "segmentHints": ["call_center"] },
+    "orbitbank.example":     { "name": "Orbit Bank",            "employees": 8000,  "industry": "financial_services", "country": "GB", "segmentHints": [] },
+    "cloudnine-saas.example":{ "name": "CloudNine SaaS",        "employees": 1500,  "industry": "saas",               "country": "US", "segmentHints": [] },
+    "devtools-inc.example":  { "name": "DevTools Inc",          "employees": 120,   "industry": "software",           "country": "DE", "segmentHints": ["developer"] },
+    "voicestack.example":    { "name": "VoiceStack",            "employees": 60,    "industry": "telecom",            "country": "CA", "segmentHints": ["developer"] },
+    "brightpath.example":    { "name": "BrightPath Consulting", "employees": 300,   "industry": "consulting",         "country": "AU", "segmentHints": [] },
+    "tinystudio.example":    { "name": "Tiny Studio",           "employees": 8,     "industry": "design",             "country": "AM", "segmentHints": [] },
+    "regionalclinic.example":{ "name": "Regional Clinic Group", "employees": 220,   "industry": "healthcare",         "country": "US", "segmentHints": [] },
+    "acme-retail.example":   { "name": "Acme Retail",           "employees": 2500,  "industry": "retail",             "country": "US", "segmentHints": [] },
+    "startupforge.example":  { "name": "StartupForge",          "employees": 25,    "industry": "saas",               "country": "US", "segmentHints": [] },
+    "univ-demo.example":     { "name": "Demo University",       "employees": 5000,  "industry": "education",          "country": "CA", "segmentHints": [] }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "freeMailDomains": ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com", "proton.me", "protonmail.com", "aol.com"],
+  "blockedDomains": ["mailinator.com", "guerrillamail.com", "competitor-corp.example"],
+  "scoring": {
+    "rules": [
+      { "id": "fit_size_enterprise", "type": "employees_range", "group": "fit", "min": 1000, "points": 25, "reason": "Enterprise-size company (1000+ employees)" },
+      { "id": "fit_size_midmarket", "type": "employees_range", "group": "fit", "min": 100, "max": 999, "points": 15, "reason": "Mid-market company (100-999 employees)" },
+      { "id": "fit_size_small", "type": "employees_range", "group": "fit", "min": 10, "max": 99, "points": 8, "reason": "Small company (10-99 employees)" },
+      { "id": "fit_industry_target", "type": "industry_in", "group": "fit", "industries": ["contact_center", "software", "saas", "telecom", "financial_services"], "points": 10, "reason": "Target industry" },
+      { "id": "fit_country_priority", "type": "country_in", "group": "fit", "countries": ["US", "CA", "GB", "DE", "AU"], "points": 5, "reason": "Priority market" },
+
+      { "id": "persona_exec", "type": "title_keywords", "group": "persona", "keywords": ["chief", "ceo", "cto", "coo", "cro", "vp", "vice president", "head of", "director"], "points": 20, "reason": "Senior decision-maker title" },
+      { "id": "persona_manager", "type": "title_keywords", "group": "persona", "keywords": ["manager", "lead", "principal"], "points": 10, "reason": "Manager-level title" },
+      { "id": "persona_function", "type": "title_keywords", "group": "persona", "keywords": ["operations", "sales", "support", "customer", "engineering", "revops"], "points": 5, "reason": "Relevant function" },
+      { "id": "persona_student", "type": "title_keywords", "group": "persona", "keywords": ["student", "intern"], "points": -15, "reason": "Student or intern title" },
+
+      { "id": "intent_demo", "type": "source_is", "group": "intent", "sources": ["demo_request"], "points": 30, "reason": "Requested a demo" },
+      { "id": "intent_pricing", "type": "source_is", "group": "intent", "sources": ["pricing_page"], "points": 20, "reason": "Came from the pricing page" },
+      { "id": "intent_partner", "type": "source_is", "group": "intent", "sources": ["partner"], "points": 15, "reason": "Partner referral" },
+      { "id": "intent_webinar", "type": "source_is", "group": "intent", "sources": ["webinar"], "points": 8, "reason": "Attended a webinar" },
+      { "id": "intent_content", "type": "source_is", "group": "intent", "sources": ["content_download"], "points": 5, "reason": "Downloaded content" },
+      { "id": "intent_message_buying", "type": "message_keywords", "group": "intent", "keywords": ["pricing", "pilot", "demo", "quote", "trial", "evaluate", "rollout", "contract"], "points": 10, "reason": "Message shows buying intent" }
+    ]
+  },
+  "routing": {
+    "rules": [
+      { "id": "blocked_domain", "queue": "disqualify", "label": "Disqualified", "when": { "type": "domain_in_list", "list": "blocked" } },
+      { "id": "developer_message", "queue": "developer_sdk", "label": "Developer / SDK team", "when": { "type": "message_keywords", "keywords": ["sdk", "api", "embed", "developer docs"] } },
+      { "id": "free_mail", "queue": "smb_nurture", "label": "SMB nurture", "when": { "type": "domain_in_list", "list": "freeMail" } },
+      { "id": "developer_segment", "queue": "developer_sdk", "label": "Developer / SDK team", "when": { "type": "segment_hint", "hint": "developer" } },
+      { "id": "call_center_segment", "queue": "call_center_specialist", "label": "Call center specialist", "when": { "type": "segment_hint", "hint": "call_center" } },
+      { "id": "unknown_company_high_intent", "queue": "needs_review", "label": "Needs human review", "when": { "type": "enrichment_missing_high_intent", "minIntentPoints": 20 } },
+      { "id": "enterprise", "queue": "enterprise_ae", "label": "Enterprise AE", "when": { "type": "employees_and_score", "minEmployees": 1000, "minScore": 60 } },
+      { "id": "midmarket", "queue": "midmarket_ae", "label": "Mid-market AE", "when": { "type": "employees_min", "minEmployees": 100 } },
+      { "id": "default", "queue": "smb_nurture", "label": "SMB nurture", "when": { "type": "always" } }
+    ]
+  }
+}
