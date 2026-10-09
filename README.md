@@ -78,7 +78,7 @@ A drafter scripted to obey an injection is blocked by the guardrails alone, and 
 git clone https://github.com/hhovhann/gtm-copilot-mcp.git
 cd gtm-copilot-mcp
 npm ci
-npm test            # 342 tests, no network, no model needed
+npm test            # 352 tests, no network, no model needed
 ```
 
 **1. Register the server with Claude Code** (once, from the repo root):
@@ -145,7 +145,7 @@ Spec-driven, in small phases, each with its own requirements, plan and validatio
 | 5 | AI SDR drafter, guardrails, approval queue (local model first) |
 | 5b | Cost per meeting: build vs buy vs hybrid |
 
-The constitution is in [`specs/`](specs/): [mission](specs/mission.md), [tech stack](specs/tech-stack.md) and [roadmap](specs/roadmap.md), including a replanning log. Each phase folder holds `requirements.md`, `plan.md` and `validation.md`; checklists were ticked only after a check was run, and real findings are recorded in them, including the mistakes. 342 automated tests run with no network, and the security-relevant code was mutation-tested.
+The constitution is in [`specs/`](specs/): [mission](specs/mission.md), [tech stack](specs/tech-stack.md) and [roadmap](specs/roadmap.md), including a replanning log. Each phase folder holds `requirements.md`, `plan.md` and `validation.md`; checklists were ticked only after a check was run, and real findings are recorded in them, including the mistakes. 352 automated tests run with no network, and the security-relevant code was mutation-tested.
 
 ## Configuration
 
@@ -174,7 +174,7 @@ The constitution is in [`specs/`](specs/): [mission](specs/mission.md), [tech st
 - **Deliverability gate on approval:** block approval when the sender domain fails `audit_domain`.
 - **Production hardening:** HMAC webhook signatures, rate limiting, TLS, a documented data-erasure path, and real approved messaging in place of the pilot placeholders.
 
-See [docs/safety.md](docs/safety.md) for the full threat model and what is deliberately not protected.
+See [docs/safety.md](docs/safety.md) for the full threat model and what is deliberately not protected, [docs/runbook.md](docs/runbook.md) for operating and troubleshooting, and [docs/data-rules.md](docs/data-rules.md) for what is stored and where it goes.
 
 ## Repository layout
 
@@ -188,7 +188,7 @@ src/db/                         SQLite schema, drafts, audit log
 src/tools/                      MCP tool handlers
 config/, data/                  Rules, approved facts, suppression, assumptions (synthetic)
 specs/                          Constitution and per-phase requirements, plans, validation
-docs/                           Architecture and safety
+docs/                           Architecture, safety, runbook, data rules
 scripts/                        Demo lead seeding
 ```
 

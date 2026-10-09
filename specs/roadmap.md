@@ -39,7 +39,7 @@ Each phase gets a folder `specs/YYYY-MM-DD-<name>/` with `requirements.md`, `pla
 
 ## Phase 6 - Docs and Demo
 - README (what it is, how you use it, quickstart verified from a clean clone), `docs/architecture.md` (five validated Mermaid diagrams) and `docs/safety.md` (threat model, evidence, stated limits): drafted
-- Still to write: runbook (deliverability drop, audit log, rotating the webhook secret, resetting demo data) and data rules (what is stored, retention, the erasure gap)
+- `docs/runbook.md` (operations, nine audit queries, playbooks, known gaps) and `docs/data-rules.md` (inventory, data flows, governance, retention and erasure gaps): written; every procedure was run on a scratch database
 - Demo video, 2 to 3 minutes, **final file under 25 MB** (check with `ls -l`/`ffprobe`; re-encode if over). Same format as the travel-assistant video (1920x1080 H.264, AAC, soft subtitles, plus `.srt`)
   - Synthetic voice from macOS `say` (one narration script, one audio file per slide)
   - Simple, clear slides: Markdown -> `pandoc` (pptx) -> `soffice` (pdf) -> `pdftoppm` (png); one idea per slide, large text

@@ -30,7 +30,7 @@ export interface ServerDeps {
   clock?: Clock;
   /** Overrides for the AI SDR drafter; by default everything is loaded lazily from config/, data/ and SDR_* env vars. */
   economics?: EconomicsConfig;
-  sdr?: { drafter?: Drafter; facts?: Fact[]; suppression?: SuppressionEntry[]; config?: SdrConfig };
+  sdr?: { drafter?: Drafter; facts?: Fact[]; suppression?: SuppressionEntry[]; suppressionFile?: URL | string; config?: SdrConfig };
 }
 
 const asText = (texts: string[]) => ({ content: texts.map((text) => ({ type: "text" as const, text })) });
@@ -46,19 +46,23 @@ export function createServer(deps: ServerDeps = {}): McpServer {
   const clock = deps.clock ?? systemClock;
   let db = deps.db;
   const getDb = () => (db ??= openDb(resolveDbPath()));
-  let sdr: SdrDeps | undefined;
+  let sdrBase: Omit<SdrDeps, "suppression"> | undefined;
   const getSdr = (): SdrDeps => {
-    if (sdr) return sdr;
-    const config = deps.sdr?.config ?? loadSdrConfigFile(new URL("../config/sdr.json", import.meta.url));
-    sdr = {
-      db: getDb(),
-      clock,
-      config,
-      drafter: deps.sdr?.drafter ?? createDrafter(config),
-      facts: deps.sdr?.facts ?? loadFactsFile(new URL("../data/approved-facts.json", import.meta.url)),
-      suppression: deps.sdr?.suppression ?? loadSuppressionFile(new URL("../data/suppression.json", import.meta.url)),
-    };
-    return sdr;
+    if (!sdrBase) {
+      const config = deps.sdr?.config ?? loadSdrConfigFile(new URL("../config/sdr.json", import.meta.url));
+      sdrBase = {
+        db: getDb(),
+        clock,
+        config,
+        drafter: deps.sdr?.drafter ?? createDrafter(config),
+        facts: deps.sdr?.facts ?? loadFactsFile(new URL("../data/approved-facts.json", import.meta.url)),
+      };
+    }
+    // Rules, facts and prompts load once per process, so changes to them are deliberate and need a restart.
+    // The suppression list is different: an opt-out must take effect immediately, so it is read on every draft.
+    const suppression =
+      deps.sdr?.suppression ?? loadSuppressionFile(deps.sdr?.suppressionFile ?? new URL("../data/suppression.json", import.meta.url));
+    return { ...sdrBase, suppression };
   };
   const getEconomics = () => ({
     db: getDb(),
