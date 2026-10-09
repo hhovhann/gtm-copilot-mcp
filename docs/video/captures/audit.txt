@@ -1,0 +1,7 @@
+Deliverability audit for github.com: 90/100
+- SPF: pass (30/35)
+- DKIM: pass (30/30)
+- DMARC: pass (30/35)
+Fixes, most important first:
+- [info] SPF: SPF uses '~all' (softfail). Fix: Move to '-all' once all senders are covered.
+- [info] DMARC: DMARC policy is 'quarantine'. Fix: Move to p=reject once legitimate senders are all aligned.

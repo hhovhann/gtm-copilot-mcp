@@ -10,7 +10,8 @@
     "dev": "tsx src/index.ts",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "webhook": "tsx src/webhook.ts"
+    "webhook": "tsx src/webhook.ts",
+    "call": "tsx scripts/mcp-call.ts"
   },
   "dependencies": {
     "@hono/node-server": "2.1.4",

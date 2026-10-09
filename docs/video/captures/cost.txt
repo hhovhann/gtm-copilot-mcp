@@ -1,0 +1,38 @@
+Cost per meeting at 2,000 leads per month
+
+Scenario                                Meetings/mo Monthly cost Cost/lead Cost/meeting Largest driver
+Build (this repo)                       9.0         $4,425       $2.21     $492         humanReview (45%)
+Buy (vendor AI SDR platform)            9.0         $4,280       $2.14     $476         fixed.platformFee (58%)
+Hybrid (vendor sending, our guardrails) 9.0         $4,085       $2.04     $454         humanReview (49%)
+
+Where the money goes, per meeting:
+  build: humanReview $222, fixed.engineeringUpkeep $200, fixed.sendingInfrastructure $33, perLead.enrichment $33, llm $3
+  buy: fixed.platformFee $278, perMeetingFee $120, humanReview $44, perLead.enrichment $33
+  hybrid: humanReview $222, fixed.platformFee $89, fixed.engineeringUpkeep $67, perMeetingFee $40, perLead.enrichment $33, llm $3
+
+Crossovers (leads per month at which two options cost the same per meeting):
+  build vs buy: about 1,469; build is cheaper below it, buy above it
+  build vs hybrid: about 3,889; hybrid is cheaper below it, build above it
+  buy vs hybrid: about 2,432; hybrid is cheaper below it, buy above it
+
+Recommendation: Cheapest at these inputs: Hybrid (vendor sending, our guardrails) at $454 per meeting, 5% below Buy (vendor AI SDR platform) ($476). It stays cheapest in 6 of 10 sensitivity cases. It loses when: reply rate x0.5 (buy), review minutes x1.5 (buy), leads per month x2 (buy), loaded hourly rate x1.5 (buy). The margin is small: treat these options as roughly equal on cost and decide on risk, control and speed.
+
+Measured from 30 stored drafts (meta-llama-3.1-8b-instruct, qwen/qwen3-14b): 473 input and 100 output tokens per draft, guardrail pass rate 63%. Priced at claude-sonnet-5-5 list rates $2 / $10 per MTok, as of 2026-10-06 (projection).
+
+Inputs (source):
+  leadsPerMonth = 2000 [assumption]
+  touchesPerLead = 4 [assumption]
+  replyRate = 0.04 [assumption]
+  positiveShare = 0.3 [assumption]
+  meetingFromPositive = 0.5 [assumption]
+  showRate = 0.75 [assumption]
+  reviewedDraftsPerLead = 1 [assumption]
+  reviewMinutesPerDraft = 1.5 [assumption]
+  loadedHourlyRate = 40 [assumption]
+  passRate = 0.6333 [measured]
+  avgInputTokens = 473.1 [measured]
+  avgOutputTokens = 100.2 [measured]
+  inputPricePerMTok = 2 [assumption]
+  outputPricePerMTok = 10 [assumption]
+
+Note: Every figure is an assumption unless tagged 'measured'. The funnel, cost and vendor numbers are placeholders, not benchmarks, not Krisp's figures and not vendor quotes. Replace them with real data before relying on the result.

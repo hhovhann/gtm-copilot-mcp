@@ -1,0 +1,8 @@
+Lead #4: received 2026-10-09T04:23:21.686Z, decided 2026-10-09T04:23:21.686Z, config a33248b0d8e6 (stored decision, not recomputed)
+Lead at brightpath.example (BrightPath Consulting, 300 employees) -> Mid-market AE
+Score: 35/100
+  +15 fit_size_midmarket: Mid-market company (100-999 employees) (300 employees)
+  +5 fit_country_priority: Priority market (AU)
+  +10 persona_manager: Manager-level title (title matched: manager)
+  +5 intent_content: Downloaded content (source: content_download)
+Route: Matched 'midmarket': 300 employees >= 100. Skipped earlier rules: blocked_domain (brightpath.example is not on the blocked list); developer_message (message has none of the keywords); free_mail (brightpath.example is not on the free-mail list); developer_segment (BrightPath Consulting has no 'developer' segment hint); call_center_segment (BrightPath Consulting has no 'call_center' segment hint); unknown_company_high_intent (company was found in enrichment); enterprise (300 employees < 1000; score 35 < 60).

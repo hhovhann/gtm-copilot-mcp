@@ -1,0 +1,1 @@
+No draft created for lead #6: this lead's queue is not eligible for drafting (disqualified or needs a human review first). Nothing was sent to the model.

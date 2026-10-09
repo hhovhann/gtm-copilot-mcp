@@ -1,0 +1,14 @@
+Draft #14 for lead #16: pending_review (drafter local, model meta-llama-3.1-8b-instruct)
+Subject: Exploring Opportunities at Orbit Bank
+
+Hi Eve, I'm reaching out to discuss how Krisp's AI Meeting Assistant can support your sales team at Orbit Bank. Our solution records and transcribes meetings, writes notes and minutes, and provides a more seamless experience for all parties involved. Would you be open to discussing this further?
+
+--
+Pilot Sender (demo, nothing is sent)
+[postal address placeholder]
+If you would rather not hear from us, reply "unsubscribe" and we will stop.
+
+Guardrails: passed (9 checks)
+  warn lead_message_dropped: the prospect's message looked like instructions and was withheld from the model
+Not checked by code (needs your eyes): paraphrased claims that evade the patterns above; tone and fit for this prospect; spam-trigger wording and deliverability content score; role confusion (for example a small model writing 'our team' as if it worked at the prospect's company); number words ('fifty percent') and claims made without any number or term
+To approve: approve_draft { draftId: 14, reviewedHash: "78a825f8189b180d7c937457758297b1e1f03599510558788477815fd0163bb4" }. Nothing is sent.

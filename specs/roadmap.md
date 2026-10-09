@@ -44,7 +44,9 @@ Each phase gets a folder `specs/YYYY-MM-DD-<name>/` with `requirements.md`, `pla
   - Synthetic voice from macOS `say` (one narration script, one audio file per slide)
   - Simple, clear slides: Markdown -> `pandoc` (pptx) -> `soffice` (pdf) -> `pdftoppm` (png); one idea per slide, large text
   - Demo slides show **real captured output** from the MCP tools, not mock-ups; `ffmpeg` joins slides and audio, with timing taken from each audio file
-  - Build script lives in the repo (`docs/video/build.sh`) so the video can be regenerated
+  - Build scripts live in the repo (`docs/video/`) so the video can be regenerated
+  - Done: narration script (2:42 with the `say` voice), eleven HTML slides rendered with headless Chrome (overflow-checked), real captures, `scripts/mcp-call.ts`
+  - To do: assemble audio and slides with `ffmpeg` (demo slides held long enough to read), soft subtitles and `.srt`, check the file is under 25 MB, listen and adjust the voice
 - Short cover note for the Krisp team
 
 ---

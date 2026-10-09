@@ -1,0 +1,20 @@
+Draft #1 for lead #9: pending_review (drafter template, model template-v1)
+Subject: A quick idea for Orbit Bank
+
+Hi Eve,
+
+I am reaching out because this may be relevant for Orbit Bank.
+Krisp offers an AI Meeting Assistant that records and transcribes meetings and writes notes and minutes.
+Krisp provides noise cancellation for calls and meetings.
+
+If that is on your radar, a quick reply with a good time to talk is all I need.
+
+--
+Pilot Sender (demo, nothing is sent)
+[postal address placeholder]
+If you would rather not hear from us, reply "unsubscribe" and we will stop.
+
+Guardrails: passed (9 checks)
+  warn lead_message_dropped: the prospect's message looked like instructions and was withheld from the model
+Not checked by code (needs your eyes): paraphrased claims that evade the patterns above; tone and fit for this prospect; spam-trigger wording and deliverability content score; role confusion (for example a small model writing 'our team' as if it worked at the prospect's company); number words ('fifty percent') and claims made without any number or term
+To approve: approve_draft { draftId: 1, reviewedHash: "f62fd9882003b5ebd4f060c95e7a99b843d00e3902f5d433ea5e32f207e09230" }. Nothing is sent.

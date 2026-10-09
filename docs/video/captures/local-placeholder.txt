@@ -1,0 +1,19 @@
+Draft #24 for lead #14: blocked (drafter local, model qwen/qwen3-14b)
+Subject: Helping BrightPath Consulting Save Time in Meetings
+
+Hi Tom, 
+
+As a Manager at BrightPath Consulting, I know how important it is to stay focused during client calls and meetings. Krisp offers tools that can help you save time and improve clarity.
+
+Best,
+[Your Name]
+
+--
+Pilot Sender (demo, nothing is sent)
+[postal address placeholder]
+If you would rather not hear from us, reply "unsubscribe" and we will stop.
+
+Guardrails: blocked (8 checks)
+  FAIL needs_source: not supported by a cited fact: "best"
+  FAIL no_internal_ids: leaks a placeholder
+Not checked by code (needs your eyes): paraphrased claims that evade the patterns above; tone and fit for this prospect; spam-trigger wording and deliverability content score; role confusion (for example a small model writing 'our team' as if it worked at the prospect's company); number words ('fifty percent') and claims made without any number or term
