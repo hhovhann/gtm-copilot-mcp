@@ -8,6 +8,12 @@ Built as a worked example for the Senior GTM Engineer role at Krisp. **All data 
 
 ---
 
+## Demo video
+
+[![Watch the demo video](docs/gtm-copilot-demo.png)](docs/gtm-copilot-demo.mp4)
+
+**Under 3 minutes, 5 MB**, with a synthetic voice (Kokoro, generated locally) and subtitles ([SRT](docs/gtm-copilot-demo.srt), [VTT](docs/gtm-copilot-demo.vtt)). Everything shown on the demo slides is real tool output; the cost figures are labeled placeholders. The narration is in [`docs/gtm-copilot-demo-script.md`](docs/gtm-copilot-demo-script.md).
+
 ## How you use it
 
 **There is no web interface.** You talk to Claude in plain language, and Claude calls the tools this server exposes. A second, small HTTP endpoint lets a CRM or web form post leads in.
@@ -105,6 +111,8 @@ npm run webhook                    # terminal A
 4. *Draft an email for lead 1.* Then *lead 6* (disqualified), *lead 8* (suppressed) and *lead 9* (carries an injection attempt).
 5. *Approve draft 1.* Claude Code asks for permission; **do not choose "always allow" for `approve_draft`**.
 6. *What does a meeting cost us, build vs buy?*
+
+You can also call any tool without Claude, through a real MCP client: `npm run call -- audit_domain '{"domain":"github.com"}'`.
 
 To remove it: `claude mcp remove gtm-copilot -s user`. Demo data lives in `data/gtm.db` (git-ignored); delete it to reset.
 

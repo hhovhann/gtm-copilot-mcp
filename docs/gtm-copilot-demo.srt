@@ -1,0 +1,244 @@
+1
+00:00:00,400 --> 00:00:03,338
+This is GTM Copilot, a
+pilot for working with
+
+2
+00:00:03,338 --> 00:00:06,080
+your revenue tools through Claude, safely.
+
+3
+00:00:06,380 --> 00:00:09,388
+It uses synthetic data,
+and nothing is ever sent.
+
+4
+00:00:10,488 --> 00:00:13,566
+Revenue operations runs
+on tickets and guesswork.
+
+5
+00:00:13,866 --> 00:00:15,626
+Why did this lead go to that rep?
+
+6
+00:00:15,926 --> 00:00:18,174
+Is our email set up to reach the inbox?
+
+7
+00:00:18,474 --> 00:00:22,245
+And an AI that writes outreach
+can say anything, to anyone.
+
+8
+00:00:22,545 --> 00:00:25,798
+The goal is fewer tickets,
+with controls you can inspect.
+
+9
+00:00:26,898 --> 00:00:28,706
+There is no new interface to learn.
+
+10
+00:00:29,006 --> 00:00:33,645
+You ask Claude in plain language, and
+Claude calls tools on an MCP server.
+
+11
+00:00:33,945 --> 00:00:36,141
+Leads arrive through a small webhook,
+
+12
+00:00:36,141 --> 00:00:39,464
+and everything lands in one
+database, with an audit log.
+
+13
+00:00:40,564 --> 00:00:44,213
+When a lead arrives, the webhook
+checks the secret and validates
+
+14
+00:00:44,213 --> 00:00:46,893
+it, then scores and routes
+it with plain rules.
+
+15
+00:00:47,193 --> 00:00:49,228
+It stores the decision and the reason.
+
+16
+00:00:49,528 --> 00:00:54,030
+Later, anyone can ask why, and get
+the answer exactly as it was decided.
+
+17
+00:00:55,130 --> 00:00:56,576
+First, deliverability.
+
+18
+00:00:56,876 --> 00:00:58,525
+I ask Claude to audit a domain.
+
+19
+00:00:58,825 --> 00:01:02,362
+It checks SPF, DKIM and
+DMARC over public DNS,
+
+20
+00:01:02,362 --> 00:01:06,591
+and returns a score, with
+the fixes ranked by severity.
+
+21
+00:01:08,130 --> 00:01:09,126
+Next, routing.
+
+22
+00:01:09,426 --> 00:01:12,595
+Why did this lead go to
+mid-market, and not enterprise?
+
+23
+00:01:12,895 --> 00:01:14,985
+The answer lists every rule that fired.
+
+24
+00:01:15,285 --> 00:01:18,333
+A score of thirty-five,
+where enterprise needs sixty.
+
+25
+00:01:21,130 --> 00:01:23,023
+Now the AI SDR.
+
+26
+00:01:23,323 --> 00:01:26,907
+It drafts from approved facts only,
+then eight checks run in code.
+
+27
+00:01:27,207 --> 00:01:31,687
+Here, a local model wrote an email that
+was only a greeting, and it was blocked.
+
+28
+00:01:31,987 --> 00:01:34,671
+When a lead's message
+tried to hijack the model,
+
+29
+00:01:34,671 --> 00:01:37,634
+the message was withheld,
+and the draft stayed clean.
+
+30
+00:01:38,734 --> 00:01:40,023
+The principle is simple.
+
+31
+00:01:40,323 --> 00:01:43,545
+The model proposes, code
+checks, and a human decides.
+
+32
+00:01:43,845 --> 00:01:45,263
+The model has no tools.
+
+33
+00:01:45,563 --> 00:01:47,474
+Lead text is treated as hostile.
+
+34
+00:01:47,774 --> 00:01:50,041
+Drafts cannot be edited after review,
+
+35
+00:01:50,041 --> 00:01:53,657
+approval needs the exact content
+hash, and nothing is sent.
+
+36
+00:01:53,957 --> 00:01:57,711
+In live runs, none of six injected
+drafts obeyed the attack.
+
+37
+00:01:58,811 --> 00:02:02,224
+Then the question your team will
+ask: build, buy, or hybrid?
+
+38
+00:02:02,524 --> 00:02:06,044
+The tool compares cost per meeting,
+and shows where the money goes.
+
+39
+00:02:06,344 --> 00:02:08,993
+With placeholder numbers,
+the options are close.
+
+40
+00:02:09,293 --> 00:02:12,180
+In build and hybrid, human
+review is the biggest
+
+41
+00:02:12,180 --> 00:02:14,647
+cost, and the model is under one percent.
+
+42
+00:02:14,947 --> 00:02:17,973
+The real answer depends on
+vendor quotes and volume.
+
+43
+00:02:19,073 --> 00:02:20,442
+I built it spec first.
+
+44
+00:02:20,742 --> 00:02:23,197
+A mission, a tech stack and a roadmap,
+
+45
+00:02:23,197 --> 00:02:27,654
+then requirements, a plan and a
+validation checklist for every phase.
+
+46
+00:02:27,954 --> 00:02:30,083
+There are three hundred fifty-two tests,
+
+47
+00:02:30,083 --> 00:02:33,754
+and I broke the security code on
+purpose to prove the tests catch it.
+
+48
+00:02:34,054 --> 00:02:38,143
+Running real models found two gaps the
+tests had missed, and I fixed them.
+
+49
+00:02:39,243 --> 00:02:43,330
+With access to your stack, the next
+steps are connectors for HubSpot,
+
+50
+00:02:43,330 --> 00:02:48,247
+Salesforce, Clay and Gong, a Claude drafter,
+and a deliverability gate on approval.
+
+51
+00:02:48,547 --> 00:02:51,271
+The code, the specs and
+a runbook are on GitHub.
+
+52
+00:02:51,571 --> 00:02:54,074
+The narration voice in
+this video is synthetic.
+
+53
+00:02:54,374 --> 00:02:55,086
+Thank you.

@@ -40,13 +40,12 @@ Each phase gets a folder `specs/YYYY-MM-DD-<name>/` with `requirements.md`, `pla
 ## Phase 6 - Docs and Demo
 - README (what it is, how you use it, quickstart verified from a clean clone), `docs/architecture.md` (five validated Mermaid diagrams) and `docs/safety.md` (threat model, evidence, stated limits): drafted
 - `docs/runbook.md` (operations, nine audit queries, playbooks, known gaps) and `docs/data-rules.md` (inventory, data flows, governance, retention and erasure gaps): written; every procedure was run on a scratch database
-- Demo video, 2 to 3 minutes, **final file under 25 MB** (check with `ls -l`/`ffprobe`; re-encode if over). Same format as the travel-assistant video (1920x1080 H.264, AAC, soft subtitles, plus `.srt`)
-  - Synthetic voice from macOS `say` (one narration script, one audio file per slide)
-  - Simple, clear slides: Markdown -> `pandoc` (pptx) -> `soffice` (pdf) -> `pdftoppm` (png); one idea per slide, large text
-  - Demo slides show **real captured output** from the MCP tools, not mock-ups; `ffmpeg` joins slides and audio, with timing taken from each audio file
-  - Build scripts live in the repo (`docs/video/`) so the video can be regenerated
-  - Done: narration script (2:42 with the `say` voice), eleven HTML slides rendered with headless Chrome (overflow-checked), real captures, `scripts/mcp-call.ts`
-  - To do: assemble audio and slides with `ffmpeg` (demo slides held long enough to read), soft subtitles and `.srt`, check the file is under 25 MB, listen and adjust the voice
+- Demo video, 2 to 3 minutes, **final file under 25 MB**: `docs/gtm-copilot-demo.mp4` (5.1 MB, 1920x1080 H.264, AAC, embedded subtitles and chapters) with `.srt`, `.vtt`, a poster and the narration script
+  - Synthetic voice: Kokoro (`af_heart`, local neural TTS, same as the travel-assistant demo videos), generated locally
+  - Simple, clear slides; the demo slides show **real captured output** from the MCP tools, not mock-ups
+  - The generator (slides, text-to-speech wrapper, assembly, verification) is generic video tooling and lives **outside this repository** (`~/work/gtm-demo-video`); it rebuilds the committed video byte for byte
+  - Checked: size, slide timing, narration placement, loudness, decode integrity, subtitles, and a local speech-recognition pass over every sentence (similarity 0.997)
+  - To do: a person listens to the voice and approves it, and records the Claude Code walkthrough check
 - Short cover note for the Krisp team
 
 ---
